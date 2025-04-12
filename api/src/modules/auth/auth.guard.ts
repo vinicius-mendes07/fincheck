@@ -16,7 +16,6 @@ export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const token = this.extractTokenFromHeader(request);
 
     if (!token) {
