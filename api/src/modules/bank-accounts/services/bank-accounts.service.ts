@@ -3,6 +3,7 @@ import { CreateBankAccountDto } from '../dto/create-bank-account.dto';
 import { UpdateBankAccountDto } from '../dto/update-bank-account.dto';
 import { BankAccountsRepository } from 'src/shared/database/repositories/bank-accounts.repositories';
 import { ValidateBankAccountOwnershipService } from './validate-bank-account-ownership.service';
+import { TransactionType } from '@prisma/client';
 
 @Injectable()
 export class BankAccountsService {
@@ -25,8 +26,35 @@ export class BankAccountsService {
     });
   }
 
-  findAllByUserId(userId: string) {
-    return this.bankAccountsRepo.findMany({ where: { userId } });
+  async findAllByUserId(userId: string) {
+    const bankAccounts = await this.bankAccountsRepo.findMany({
+      where: { userId },
+      include: {
+        transactions: {
+          select: {
+            type: true,
+            value: true,
+          },
+        },
+      },
+    });
+
+    return bankAccounts.map(({ transactions, ...bankAccount }) => {
+      const currentBalance =
+        bankAccount.initialBalance +
+        transactions.reduce(
+          (acc, item) =>
+            item.type === TransactionType.INCOME
+              ? acc + item.value
+              : acc - item.value,
+          0,
+        );
+
+      return {
+        ...bankAccount,
+        currentBalance,
+      };
+    });
   }
 
   async update(
