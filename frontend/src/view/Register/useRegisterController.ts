@@ -22,19 +22,18 @@ type FormData = z.infer<typeof schema>;
 
 export function useRegisterController() {
   const {
-    handleSubmit: hookFormHandleSubmit,
+    handleSubmit: hookFormSubmit,
     register,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   const { mutateAsync, isPending } = useMutation({
-    mutationKey: ['signup'],
     mutationFn: async (data: SignUpParams) => {
       return authService.signup(data);
     },
   });
 
-  const handleSubmit = hookFormHandleSubmit(async (data) => {
+  const handleSubmit = hookFormSubmit(async (data) => {
     try {
       await mutateAsync(data);
     } catch {
