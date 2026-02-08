@@ -2,7 +2,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 // @ts-expect-error just types
 import 'swiper/css';
 
-import { AccountsSliderNavigation } from './AccountsSliderNavigation';
+import { SliderNavigation } from './SliderNavigation';
 import { EyeIcon } from '../../../components/icons/EyeIcon';
 import { AccountCard } from './AccountCard';
 import { useAccountsController } from './useAccountsController';
@@ -45,7 +45,7 @@ export function Accounts() {
                 Minhas contas
               </strong>
 
-              <AccountsSliderNavigation
+              <SliderNavigation
                 isBeginning={sliderState.isBeginning}
                 isEnd={sliderState.isEnd}
               />
