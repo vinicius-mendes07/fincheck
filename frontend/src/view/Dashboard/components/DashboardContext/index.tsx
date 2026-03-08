@@ -24,7 +24,7 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
   const [areValuesVisible, setAreValuesVisible] = useState(true);
   const [isNewAccountModalOpen, setIsNewAccountModalOpen] = useState(false);
   const [isNewTransactionModalOpen, setIsNewTransactionModalOpen] =
-    useState(true);
+    useState(false);
   const [newTransactionType, setNewTransactionType] = useState<
     'INCOME' | 'EXPENSE' | null
   >(null);
