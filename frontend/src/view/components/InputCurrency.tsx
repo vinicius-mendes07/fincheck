@@ -4,7 +4,7 @@ import { cn } from '../../app/utils/cn';
 
 interface InputCurrencyProps {
   error?: string;
-  value?: string;
+  value?: string | number;
   onChange?: (value: string) => void;
 }
 
@@ -19,7 +19,8 @@ export function InputCurrency({ error, value, onChange }: InputCurrencyProps) {
         value={value}
         thousandSeparator="."
         decimalSeparator=","
-        onValueChange={(val) => onChange?.(val.value)}
+        valueIsNumericString={false}
+        onValueChange={(val) => onChange?.(val.formattedValue)}
       />
 
       {error && (
