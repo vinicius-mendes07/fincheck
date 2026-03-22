@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { bankAccountsService } from '../../../../app/services/bankAccountsService.ts';
 import { currencyStringToNumber } from '../../../../app/utils/currencyStringToNumber.ts';
 import toast from 'react-hot-toast';
+import { useState } from 'react';
 
 const schema = z.object({
   initialBalance: z.union([
@@ -20,6 +21,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export function useEditAccountModalController() {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { isEditAccountModalOpen, closeEditAccountModal, accountBeingEdited } =
     useDashboard();
 
@@ -39,13 +41,17 @@ export function useEditAccountModalController() {
   });
 
   const queryClient = useQueryClient();
-  const { isPending, mutateAsync } = useMutation({
+  const { isPending, mutateAsync: updateAccount } = useMutation({
     mutationFn: bankAccountsService.update,
   });
+  const { isPending: isLoadingDelete, mutateAsync: removeAccount } =
+    useMutation({
+      mutationFn: bankAccountsService.remove,
+    });
 
   const handleSubmit = hookFormSubmit(async (data) => {
     try {
-      await mutateAsync({
+      await updateAccount({
         ...data,
         initialBalance: currencyStringToNumber(data.initialBalance),
         id: accountBeingEdited!.id,
@@ -59,6 +65,25 @@ export function useEditAccountModalController() {
     }
   });
 
+  function handleOpenDeleteModal() {
+    setIsDeleteModalOpen(true);
+  }
+  function handleCloseDeleteModal() {
+    setIsDeleteModalOpen(false);
+  }
+
+  async function handleDeleteAccount() {
+    try {
+      await removeAccount(accountBeingEdited!.id);
+
+      queryClient.invalidateQueries({ queryKey: ['bankAccounts'] });
+      toast.success('A conta foi deletada com sucesso!');
+      closeEditAccountModal();
+    } catch {
+      toast.error('Erro ao deletar a conta!');
+    }
+  }
+
   return {
     isEditAccountModalOpen,
     closeEditAccountModal,
@@ -67,5 +92,10 @@ export function useEditAccountModalController() {
     handleSubmit,
     control,
     isPending,
+    isDeleteModalOpen,
+    handleOpenDeleteModal,
+    handleCloseDeleteModal,
+    handleDeleteAccount,
+    isLoadingDelete,
   };
 }
