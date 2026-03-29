@@ -5,7 +5,7 @@ import { authService } from '../../app/services/authService';
 import { useMutation } from '@tanstack/react-query';
 import { SignUpParams } from '../../app/services/authService/signup';
 import toast from 'react-hot-toast';
-import { useAuth } from '../../app/hooks.ts/useAuth';
+import { useAuth } from '../../app/hooks/useAuth';
 
 const schema = z.object({
   name: z.string().nonempty('Nome é obrigatório'),

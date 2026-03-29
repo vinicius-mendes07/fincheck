@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useWindowWidth } from '../../../../app/hooks.ts/useWindowWidth';
+import { useWindowWidth } from '../../../../app/hooks/useWindowWidth.ts';
 import { useDashboard } from '../DashboardContext/useDashboard';
 import { useQuery } from '@tanstack/react-query';
 import { bankAccountsService } from '../../../../app/services/bankAccountsService.ts';

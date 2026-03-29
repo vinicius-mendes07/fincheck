@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { authService } from '../../app/services/authService';
 import toast from 'react-hot-toast';
 import { SigninParams } from '../../app/services/authService/signin';
-import { useAuth } from '../../app/hooks.ts/useAuth';
+import { useAuth } from '../../app/hooks/useAuth';
 
 const schema = z.object({
   email: z
