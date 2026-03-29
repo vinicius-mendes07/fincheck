@@ -16,6 +16,7 @@ export function NewTransactionModal() {
     errors,
     control,
     handleSubmit,
+    accounts,
   } = useNewTransactionModalController();
 
   const isExpense = newTransactionType === 'EXPENSE';
@@ -92,20 +93,10 @@ export function NewTransactionModal() {
                 value={value}
                 error={errors.bankAccountId?.message}
                 placeholder={isExpense ? 'Pagar com' : 'Receber com'}
-                options={[
-                  {
-                    label: 'Conta Corrente',
-                    value: 'CHECKING',
-                  },
-                  {
-                    label: 'Investimentos',
-                    value: 'INVESTMENT',
-                  },
-                  {
-                    label: 'Dinheiro Físico',
-                    value: 'CASH',
-                  },
-                ]}
+                options={accounts.map((account) => ({
+                  label: account.name,
+                  value: account.id,
+                }))}
               />
             )}
           />
