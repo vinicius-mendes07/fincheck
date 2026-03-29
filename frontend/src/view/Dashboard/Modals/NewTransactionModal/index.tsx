@@ -17,6 +17,7 @@ export function NewTransactionModal() {
     control,
     handleSubmit,
     accounts,
+    categories,
   } = useNewTransactionModalController();
 
   const isExpense = newTransactionType === 'EXPENSE';
@@ -66,20 +67,10 @@ export function NewTransactionModal() {
                 value={value}
                 placeholder="Categoria"
                 error={errors.categoryId?.message}
-                options={[
-                  {
-                    label: 'Conta Corrente',
-                    value: 'CHECKING',
-                  },
-                  {
-                    label: 'Investimentos',
-                    value: 'INVESTMENT',
-                  },
-                  {
-                    label: 'Dinheiro Físico',
-                    value: 'CASH',
-                  },
-                ]}
+                options={categories.map((category) => ({
+                  label: category.name,
+                  value: category.id,
+                }))}
               />
             )}
           />
