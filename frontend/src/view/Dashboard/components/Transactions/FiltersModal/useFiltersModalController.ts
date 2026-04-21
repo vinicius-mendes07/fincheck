@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export function useFiltersModal() {
+export function useFiltersModalController() {
   const [selectedBankAccountId, setSelectedBankAccountId] = useState<
     string | null
   >(null);
