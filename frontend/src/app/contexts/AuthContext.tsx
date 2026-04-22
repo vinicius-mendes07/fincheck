@@ -15,7 +15,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return !!storedAccessToken;
   });
 
-  const { isError, isFetching, isSuccess } = useQuery({
+  const { isError, isFetching, isSuccess, data } = useQuery({
     queryKey: ['users', 'me'],
     queryFn: () => usersService.me(),
     enabled: signedIn,
@@ -42,8 +42,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [isError, signout]);
 
   const value = useMemo(
-    () => ({ signedIn: isSuccess && signedIn, signin, signout }),
-    [isSuccess, signedIn, signin, signout],
+    () => ({ signedIn: isSuccess && signedIn, user: data, signin, signout }),
+    [data, isSuccess, signedIn, signin, signout],
   );
 
   return (
